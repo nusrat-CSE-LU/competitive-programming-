@@ -1,1 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100 Codeforces String Problems</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --accent: #f0c040;
+    --green: #4ade80;
+    --yellow: #facc15;
+    --orange: #fb923c;
+    --blue: #60a5fa;
+    --red: #f87171;
+    --purple: #c084fc;
+    --pink: #f472b6;
+  }
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 80px 40px 60px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(240,192,64,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(240,192,64,0.3);
+    padding: 5px 14px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    animation: fadeDown 0.7s 0.1s ease both;
+  }
+
+  .hero h1 span {
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    margin-top: 16px;
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 400;
+    animation: fadeDown 0.7s 0.2s ease both;
+  }
+
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+    animation: fadeDown 0.7s 0.3s ease both;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ROADMAP */
+  .roadmap-section {
+    max-width: 900px;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .section-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .roadmap {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .roadmap-step {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+  }
+
+  .roadmap-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .roadmap-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .roadmap-label {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .roadmap-arrow {
+    width: 36px;
+    height: 1px;
+    background: var(--border);
+    position: relative;
+    margin: 0 4px;
+    top: -8px;
+  }
+
+  .roadmap-arrow::after {
+    content: '›';
+    position: absolute;
+    right: -6px;
+    top: -9px;
+    color: var(--border);
+    font-size: 14px;
+  }
+
+  /* MAIN CONTENT */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  /* LEVEL SECTION */
+  .level-section {
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .level-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .level-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .level-info h2 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .level-meta {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    margin-top: 2px;
+  }
+
+  .level-count {
+    margin-left: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* TABLE */
+  .problems-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .problems-table thead tr {
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .problems-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 16px;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  .problems-table td {
+    padding: 11px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(30,30,46,0.6);
+    vertical-align: middle;
+  }
+
+  .problems-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .problems-table tbody tr {
+    transition: background 0.15s;
+  }
+
+  .problems-table tbody tr:hover {
+    background: rgba(255,255,255,0.03);
+  }
+
+  .prob-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    width: 40px;
+  }
+
+  .prob-link {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.15s;
+  }
+
+  .prob-link:hover {
+    color: var(--accent);
+  }
+
+  .prob-link::after {
+    content: ' ↗';
+    font-size: 10px;
+    opacity: 0.4;
+  }
+
+  .prob-id {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .topic-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+
+  /* Level colors */
+  .lvl1 .level-badge { background: rgba(74,222,128,0.1); }
+  .lvl1 .level-info h2 { color: var(--green); }
+  .lvl1 .topic-tag { color: var(--green); border-color: rgba(74,222,128,0.25); background: rgba(74,222,128,0.06); }
+  .lvl1 .roadmap-dot { background: var(--green); }
+
+  .lvl2 .level-badge { background: rgba(250,204,21,0.1); }
+  .lvl2 .level-info h2 { color: var(--yellow); }
+  .lvl2 .topic-tag { color: var(--yellow); border-color: rgba(250,204,21,0.25); background: rgba(250,204,21,0.06); }
+  .lvl2 .roadmap-dot { background: var(--yellow); }
+
+  .lvl3 .level-badge { background: rgba(251,146,60,0.1); }
+  .lvl3 .level-info h2 { color: var(--orange); }
+  .lvl3 .topic-tag { color: var(--orange); border-color: rgba(251,146,60,0.25); background: rgba(251,146,60,0.06); }
+  .lvl3 .roadmap-dot { background: var(--orange); }
+
+  .lvl4 .level-badge { background: rgba(96,165,250,0.1); }
+  .lvl4 .level-info h2 { color: var(--blue); }
+  .lvl4 .topic-tag { color: var(--blue); border-color: rgba(96,165,250,0.25); background: rgba(96,165,250,0.06); }
+  .lvl4 .roadmap-dot { background: var(--blue); }
+
+  .lvl5 .level-badge { background: rgba(248,113,113,0.1); }
+  .lvl5 .level-info h2 { color: var(--red); }
+  .lvl5 .topic-tag { color: var(--red); border-color: rgba(248,113,113,0.25); background: rgba(248,113,113,0.06); }
+  .lvl5 .roadmap-dot { background: var(--red); }
+
+  .lvl6 .level-badge { background: rgba(192,132,252,0.1); }
+  .lvl6 .level-info h2 { color: var(--purple); }
+  .lvl6 .topic-tag { color: var(--purple); border-color: rgba(192,132,252,0.25); background: rgba(192,132,252,0.06); }
+  .lvl6 .roadmap-dot { background: var(--purple); }
+
+  .lvl7 .level-badge { background: rgba(244,114,182,0.1); }
+  .lvl7 .level-info h2 { color: var(--pink); }
+  .lvl7 .topic-tag { color: var(--pink); border-color: rgba(244,114,182,0.25); background: rgba(244,114,182,0.06); }
+  .lvl7 .roadmap-dot { background: var(--pink); }
+
+  /* ALGORITHM ROADMAP BOX */
+  .algo-roadmap {
+    max-width: 900px;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+  }
+
+  .algo-flow {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .algo-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .algo-step:last-child {
+    border-bottom: none;
+  }
+
+  .algo-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    width: 24px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .algo-content {
+    flex: 1;
+  }
+
+  .algo-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+
+  .algo-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .algo-connector {
+    display: flex;
+    align-items: center;
+    padding: 4px 0 4px 40px;
+    color: var(--border);
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 40px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* SEARCH */
+  .search-bar {
+    max-width: 900px;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+    animation: fadeDown 0.7s 0.35s ease both;
+  }
+
+  .search-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px 12px 44px;
+    font-size: 14px;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b6b80' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.242 1.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 14px center;
+  }
+
+  .search-input:focus {
+    border-color: rgba(240,192,64,0.4);
+  }
+
+  .search-input::placeholder {
+    color: var(--muted);
+  }
+
+  .hidden-row { display: none; }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding: 50px 16px 40px; }
+    .problems-table th:nth-child(3), .problems-table td:nth-child(3) { display: none; }
+    .stats-row { gap: 20px; }
+    .algo-flow { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Competitive Programming · Strings</div>
+  <h1>100 Codeforces<br><span>String Problems</span></h1>
+  <p class="hero-sub">A complete roadmap from Newbie to Grandmaster — master every string algorithm</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">100</div><div class="stat-label">Problems</div></div>
+    <div class="stat"><div class="stat-num">7</div><div class="stat-label">Levels</div></div>
+    <div class="stat"><div class="stat-num">800</div><div class="stat-label">Min Rating</div></div>
+    <div class="stat"><div class="stat-num">2600+</div><div class="stat-label">Max Rating</div></div>
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-bar">
+  <input class="search-input" type="text" placeholder="Search by problem name or topic..." id="searchInput" oninput="filterProblems()" />
+</div>
+
+<!-- ALGORITHM ROADMAP -->
+<div class="algo-roadmap">
+  <div class="section-title">📍 Algorithm Learning Path</div>
+  <div class="algo-flow">
+    <div class="algo-step">
+      <div class="algo-num">01</div>
+      <div class="algo-content">
+        <div class="algo-name" style="color:var(--green)">Basic Traversal & Frequency Counting</div>
+        <div class="algo-desc">Character maps, simple iteration, case manipulation, anagram checks</div>
+      </div>
+    </div>
+    <div class="algo-step">
+      <div class="algo-num">02</div>
+      <div class="algo-content">
+        <div class="algo-name" style="color:var(--yellow)">Two Pointers & Palindrome Basics</div>
+        <div class="algo-desc">Sliding window, prefix sums on strings, brute-force palindrome detection</div>
+      </div>
+    </div>
+    <div class="algo-step">
+      <div class="algo-num">03</div>
+      <div class="algo-content">
+        <div class="algo-name" style="color:var(--orange)">KMP (Prefix Function) & Z-Algorithm</div>
+        <div class="algo-desc">Failure function, pattern matching in O(n+m), period detection</div>
+      </div>
+    </div>
+    <div class="algo-step">
+      <div class="algo-num">04</div>
+      <div class="algo-content">
+        <div class="algo-name" style="color:var(--blue)">String Hashing (Polynomial / Rolling)</div>
+        <div class="algo-desc">Rabin-Karp, double hashing, substring equality in O(1)</div>
+      </div>
+    </div>
+    <div class="algo-step">
+      <div class="algo-num">05</div>
+      <div class="algo-content">
+        <div class="algo-name" style="color:var(--blue)">Manacher's Algorithm</div>
+        <div class="algo-desc">All palindromic substrings in O(n), longest palindromic substring</div>
+      </div>
+    </div>
+    <div class="algo-step">
+      <div class="algo-num">06</div>
+      <div class="algo-content">
+        <div class="algo-name" style="color:var(--red)">Suffix Array + LCP Array</div>
+        <div class="algo-desc">SA-IS / DC3 construction, longest repeated substring, string comparisons</div>
+      </div>
+    </div>
+    <div class="algo-step">
+      <div class="algo-num">07</div>
+      <div class="algo-content">
+        <div class="algo-name" style="color:var(--red)">Aho-Corasick Automaton</div>
+        <div class="algo-desc">Multi-pattern matching, AC + DP for counting, AC + matrix exponentiation</div>
+      </div>
+    </div>
+    <div class="algo-step">
+      <div class="algo-num">08</div>
+      <div class="algo-content">
+        <div class="algo-name" style="color:var(--purple)">Suffix Automaton (SAM)</div>
+        <div class="algo-desc">All distinct substrings, SAM + DP, online construction, generalized SAM</div>
+      </div>
+    </div>
+    <div class="algo-step">
+      <div class="algo-num">09</div>
+      <div class="algo-content">
+        <div class="algo-name" style="color:var(--purple)">Palindromic Tree (Eertree)</div>
+        <div class="algo-desc">All distinct palindromes, palindrome series, online palindrome structures</div>
+      </div>
+    </div>
+    <div class="algo-step">
+      <div class="algo-num">10</div>
+      <div class="algo-content">
+        <div class="algo-name" style="color:var(--pink)">Advanced Combinations</div>
+        <div class="algo-desc">SAM on trees + LCT, AC + HLD, SAM + Segment Tree, offline string algorithms</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEMS -->
+<div class="container" id="problemsContainer">
+
+  <!-- LEVEL 1 -->
+  <div class="level-section lvl1">
+    <div class="level-header">
+      <div class="level-badge">🟢</div>
+      <div class="level-info">
+        <h2>Level 1 — Basics</h2>
+        <div class="level-meta">Rating ~800–1000 · Simple traversal, character counting, case manipulation</div>
+      </div>
+      <div class="level-count">10 problems</div>
+    </div>
+    <table class="problems-table">
+      <thead><tr><th>#</th><th>Problem</th><th>ID</th><th>Topic</th></tr></thead>
+      <tbody>
+        <tr><td class="prob-num">1</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/118/A" target="_blank">String Task</a></td><td class="prob-id">118A</td><td><span class="topic-tag">Character Filtering</span></td></tr>
+        <tr><td class="prob-num">2</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/131/A" target="_blank">cAPS lOCK</a></td><td class="prob-id">131A</td><td><span class="topic-tag">Case Manipulation</span></td></tr>
+        <tr><td class="prob-num">3</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/58/A" target="_blank">Chat Room</a></td><td class="prob-id">58A</td><td><span class="topic-tag">Subsequence Check</span></td></tr>
+        <tr><td class="prob-num">4</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/71/A" target="_blank">Way Too Long Words</a></td><td class="prob-id">71A</td><td><span class="topic-tag">Basic String Output</span></td></tr>
+        <tr><td class="prob-num">5</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/96/A" target="_blank">Football Kit</a></td><td class="prob-id">96A</td><td><span class="topic-tag">Frequency Counting</span></td></tr>
+        <tr><td class="prob-num">6</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/344/A" target="_blank">Magnets</a></td><td class="prob-id">344A</td><td><span class="topic-tag">String Grouping</span></td></tr>
+        <tr><td class="prob-num">7</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1671/A" target="_blank">String Building</a></td><td class="prob-id">1671A</td><td><span class="topic-tag">Pattern Check</span></td></tr>
+        <tr><td class="prob-num">8</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/489/B" target="_blank">BerSU Ball</a></td><td class="prob-id">489B</td><td><span class="topic-tag">Greedy + Sorting</span></td></tr>
+        <tr><td class="prob-num">9</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/507/A" target="_blank">Amr and Music</a></td><td class="prob-id">507A</td><td><span class="topic-tag">Frequency Map</span></td></tr>
+        <tr><td class="prob-num">10</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1337/A" target="_blank">Ichihime and Triangle</a></td><td class="prob-id">1337A</td><td><span class="topic-tag">Basic Logic</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LEVEL 2 -->
+  <div class="level-section lvl2">
+    <div class="level-header">
+      <div class="level-badge">🟡</div>
+      <div class="level-info">
+        <h2>Level 2 — Easy–Medium</h2>
+        <div class="level-meta">Rating ~1000–1400 · Two pointers, frequency maps, palindrome basics, anagrams</div>
+      </div>
+      <div class="level-count">15 problems</div>
+    </div>
+    <table class="problems-table">
+      <thead><tr><th>#</th><th>Problem</th><th>ID</th><th>Topic</th></tr></thead>
+      <tbody>
+        <tr><td class="prob-num">11</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/266/B" target="_blank">Queue at the School</a></td><td class="prob-id">266B</td><td><span class="topic-tag">String Simulation</span></td></tr>
+        <tr><td class="prob-num">12</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/165/C" target="_blank">Another Problem on Strings</a></td><td class="prob-id">165C</td><td><span class="topic-tag">Prefix Sums</span></td></tr>
+        <tr><td class="prob-num">13</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1059/B" target="_blank">Appending Mex</a></td><td class="prob-id">1059B</td><td><span class="topic-tag">Set + Simulation</span></td></tr>
+        <tr><td class="prob-num">14</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1139/B" target="_blank">Chocolates</a></td><td class="prob-id">1139B</td><td><span class="topic-tag">Frequency</span></td></tr>
+        <tr><td class="prob-num">15</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1006B" target="_blank">Polycarp's Practice</a></td><td class="prob-id">1006B</td><td><span class="topic-tag">Greedy String</span></td></tr>
+        <tr><td class="prob-num">16</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/158/B" target="_blank">Taxi</a></td><td class="prob-id">158B</td><td><span class="topic-tag">Grouping</span></td></tr>
+        <tr><td class="prob-num">17</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1097/B" target="_blank">Petr and a Combination Lock</a></td><td class="prob-id">1097B</td><td><span class="topic-tag">Brute Force</span></td></tr>
+        <tr><td class="prob-num">18</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/271/A" target="_blank">Beautiful String</a></td><td class="prob-id">271A</td><td><span class="topic-tag">Palindrome Avoidance</span></td></tr>
+        <tr><td class="prob-num">19</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1237/D" target="_blank">Balanced String</a></td><td class="prob-id">1237D</td><td><span class="topic-tag">Constructive</span></td></tr>
+        <tr><td class="prob-num">20</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1144/B" target="_blank">Parity Alternation</a></td><td class="prob-id">1144B</td><td><span class="topic-tag">String Construction</span></td></tr>
+        <tr><td class="prob-num">21</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1367/B" target="_blank">Even Array</a></td><td class="prob-id">1367B</td><td><span class="topic-tag">String Pairing</span></td></tr>
+        <tr><td class="prob-num">22</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1335/C" target="_blank">Two Teams Composing</a></td><td class="prob-id">1335C</td><td><span class="topic-tag">Frequency Logic</span></td></tr>
+        <tr><td class="prob-num">23</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1279/B" target="_blank">Verse For Santa</a></td><td class="prob-id">1279B</td><td><span class="topic-tag">String Comparison</span></td></tr>
+        <tr><td class="prob-num">24</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1041/B" target="_blank">Buying a TV Set</a></td><td class="prob-id">1041B</td><td><span class="topic-tag">GCD + Parsing</span></td></tr>
+        <tr><td class="prob-num">25</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1353/C" target="_blank">Board Moves</a></td><td class="prob-id">1353C</td><td><span class="topic-tag">Pattern Matching</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LEVEL 3 -->
+  <div class="level-section lvl3">
+    <div class="level-header">
+      <div class="level-badge">🟠</div>
+      <div class="level-info">
+        <h2>Level 3 — Medium</h2>
+        <div class="level-meta">Rating ~1400–1700 · Hashing intro, greedy on strings, constructive, DP basics</div>
+      </div>
+      <div class="level-count">15 problems</div>
+    </div>
+    <table class="problems-table">
+      <thead><tr><th>#</th><th>Problem</th><th>ID</th><th>Topic</th></tr></thead>
+      <tbody>
+        <tr><td class="prob-num">26</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/271/D" target="_blank">Good Strings</a></td><td class="prob-id">271D</td><td><span class="topic-tag">DP on Strings</span></td></tr>
+        <tr><td class="prob-num">27</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1107/D" target="_blank">Compression</a></td><td class="prob-id">1107D</td><td><span class="topic-tag">String Period</span></td></tr>
+        <tr><td class="prob-num">28</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/159/D" target="_blank">Palindrome Degree</a></td><td class="prob-id">159D</td><td><span class="topic-tag">Palindrome + Hashing</span></td></tr>
+        <tr><td class="prob-num">29</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/A" target="_blank">Oh Those Palindromes</a></td><td class="prob-id">1063A</td><td><span class="topic-tag">Palindrome Arrangement</span></td></tr>
+        <tr><td class="prob-num">30</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1301/C" target="_blank">Ayoub and Lost Array</a></td><td class="prob-id">1301C</td><td><span class="topic-tag">DP + Modular</span></td></tr>
+        <tr><td class="prob-num">31</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1251/C" target="_blank">Minimize the Integer</a></td><td class="prob-id">1251C</td><td><span class="topic-tag">Greedy String</span></td></tr>
+        <tr><td class="prob-num">32</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1354/C" target="_blank">Simple Polygon Embedding</a></td><td class="prob-id">1354C</td><td><span class="topic-tag">Constructive</span></td></tr>
+        <tr><td class="prob-num">33</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1370/C" target="_blank">Number Game</a></td><td class="prob-id">1370C</td><td><span class="topic-tag">Greedy</span></td></tr>
+        <tr><td class="prob-num">34</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1257/D" target="_blank">Unique Palindromes</a></td><td class="prob-id">1257D</td><td><span class="topic-tag">Palindrome Construction</span></td></tr>
+        <tr><td class="prob-num">35</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1203/D" target="_blank">Remove the Substring</a></td><td class="prob-id">1203D</td><td><span class="topic-tag">Subsequence + Greedy</span></td></tr>
+        <tr><td class="prob-num">36</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1202/C" target="_blank">You Need to Proofread</a></td><td class="prob-id">1202C</td><td><span class="topic-tag">KMP Intro</span></td></tr>
+        <tr><td class="prob-num">37</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1316/C" target="_blank">Primitive Primes</a></td><td class="prob-id">1316C</td><td><span class="topic-tag">String Math</span></td></tr>
+        <tr><td class="prob-num">38</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1281/C" target="_blank">Increasing Subsequence</a></td><td class="prob-id">1281C</td><td><span class="topic-tag">Two Pointers</span></td></tr>
+        <tr><td class="prob-num">39</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1369/C" target="_blank">RationalLee</a></td><td class="prob-id">1369C</td><td><span class="topic-tag">Greedy Sort</span></td></tr>
+        <tr><td class="prob-num">40</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1374/D" target="_blank">Zero-One Knapsack</a></td><td class="prob-id">1374D</td><td><span class="topic-tag">DP Strings</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LEVEL 4 -->
+  <div class="level-section lvl4">
+    <div class="level-header">
+      <div class="level-badge">🔵</div>
+      <div class="level-info">
+        <h2>Level 4 — Medium–Hard</h2>
+        <div class="level-meta">Rating ~1700–2000 · KMP, Z-function, string hashing, rolling hash</div>
+      </div>
+      <div class="level-count">15 problems</div>
+    </div>
+    <table class="problems-table">
+      <thead><tr><th>#</th><th>Problem</th><th>ID</th><th>Topic</th></tr></thead>
+      <tbody>
+        <tr><td class="prob-num">41</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/432/D" target="_blank">Prefixes and Suffixes</a></td><td class="prob-id">432D</td><td><span class="topic-tag">KMP / Z-function</span></td></tr>
+        <tr><td class="prob-num">42</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/126/B" target="_blank">Password</a></td><td class="prob-id">126B</td><td><span class="topic-tag">KMP Prefix Function</span></td></tr>
+        <tr><td class="prob-num">43</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1200/E" target="_blank">Compress Words</a></td><td class="prob-id">1200E</td><td><span class="topic-tag">Hashing / KMP</span></td></tr>
+        <tr><td class="prob-num">44</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/835/D" target="_blank">Palindrome Degree</a></td><td class="prob-id">835D</td><td><span class="topic-tag">Palindrome Hashing</span></td></tr>
+        <tr><td class="prob-num">45</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/7/D" target="_blank">Palindrome Degree (orig)</a></td><td class="prob-id">7D</td><td><span class="topic-tag">Z-function Palindrome</span></td></tr>
+        <tr><td class="prob-num">46</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/B" target="_blank">Labyrinth</a></td><td class="prob-id">1063B</td><td><span class="topic-tag">Two Pointers</span></td></tr>
+        <tr><td class="prob-num">47</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/F" target="_blank">String Journey</a></td><td class="prob-id">1063F</td><td><span class="topic-tag">Z-function + DP</span></td></tr>
+        <tr><td class="prob-num">48</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/580/E" target="_blank">Kefa and Watch</a></td><td class="prob-id">580E</td><td><span class="topic-tag">String Hashing + DS</span></td></tr>
+        <tr><td class="prob-num">49</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1059/E" target="_blank">Split the Tree</a></td><td class="prob-id">1059E</td><td><span class="topic-tag">Hashing on Tree</span></td></tr>
+        <tr><td class="prob-num">50</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/954/I" target="_blank">Yet Another String Matching</a></td><td class="prob-id">954I</td><td><span class="topic-tag">KMP + DSU</span></td></tr>
+        <tr><td class="prob-num">51</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1471/F" target="_blank">Strange Beauty</a></td><td class="prob-id">1471F</td><td><span class="topic-tag">Rolling Hash</span></td></tr>
+        <tr><td class="prob-num">52</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1374/F" target="_blank">Pairs of Paths</a></td><td class="prob-id">1374F</td><td><span class="topic-tag">Hashing + Tree</span></td></tr>
+        <tr><td class="prob-num">53</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/H" target="_blank">A + B Strikes Back</a></td><td class="prob-id">1063H</td><td><span class="topic-tag">Hash + Trie</span></td></tr>
+        <tr><td class="prob-num">54</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/235/C" target="_blank">Cyclical String</a></td><td class="prob-id">235C</td><td><span class="topic-tag">KMP + Cyclic</span></td></tr>
+        <tr><td class="prob-num">55</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1202/D" target="_blank">Print String</a></td><td class="prob-id">1202D</td><td><span class="topic-tag">Z + Construction</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LEVEL 5 -->
+  <div class="level-section lvl5">
+    <div class="level-header">
+      <div class="level-badge">🔴</div>
+      <div class="level-info">
+        <h2>Level 5 — Hard</h2>
+        <div class="level-meta">Rating ~2000–2300 · Suffix Arrays, Aho-Corasick, Manacher's, Palindromic Trees</div>
+      </div>
+      <div class="level-count">15 problems</div>
+    </div>
+    <table class="problems-table">
+      <thead><tr><th>#</th><th>Problem</th><th>ID</th><th>Topic</th></tr></thead>
+      <tbody>
+        <tr><td class="prob-num">56</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/700/E" target="_blank">Cool Slogans</a></td><td class="prob-id">700E</td><td><span class="topic-tag">Suffix Array + DP</span></td></tr>
+        <tr><td class="prob-num">57</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/291/E" target="_blank">Tree-String Problem</a></td><td class="prob-id">291E</td><td><span class="topic-tag">Aho-Corasick</span></td></tr>
+        <tr><td class="prob-num">58</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/696/D" target="_blank">Legen...</a></td><td class="prob-id">696D</td><td><span class="topic-tag">Aho-Corasick + Matrix</span></td></tr>
+        <tr><td class="prob-num">59</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/452/E" target="_blank">Four Divisors</a></td><td class="prob-id">452E</td><td><span class="topic-tag">Suffix Array</span></td></tr>
+        <tr><td class="prob-num">60</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/5/E" target="_blank">Bindian Signalizing</a></td><td class="prob-id">5E</td><td><span class="topic-tag">Suffix Array</span></td></tr>
+        <tr><td class="prob-num">61</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/316/E3" target="_blank">Summer Oenothera Exhibition</a></td><td class="prob-id">316E3</td><td><span class="topic-tag">SA + LCP</span></td></tr>
+        <tr><td class="prob-num">62</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/906/E" target="_blank">Reverses</a></td><td class="prob-id">906E</td><td><span class="topic-tag">Palindromic Tree</span></td></tr>
+        <tr><td class="prob-num">63</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/906/D" target="_blank">Power Tower</a></td><td class="prob-id">906D</td><td><span class="topic-tag">Eertree</span></td></tr>
+        <tr><td class="prob-num">64</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/835/F" target="_blank">Roads in the Kingdom</a></td><td class="prob-id">835F</td><td><span class="topic-tag">Manacher's</span></td></tr>
+        <tr><td class="prob-num">65</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/D" target="_blank">Zeros and Ones</a></td><td class="prob-id">1063D</td><td><span class="topic-tag">Manacher + Logic</span></td></tr>
+        <tr><td class="prob-num">66</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1201/D" target="_blank">Multidimensional Queries</a></td><td class="prob-id">1201D</td><td><span class="topic-tag">SA + BIT</span></td></tr>
+        <tr><td class="prob-num">67</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/660/F" target="_blank">Bear and Bowling</a></td><td class="prob-id">660F</td><td><span class="topic-tag">Aho-Corasick DP</span></td></tr>
+        <tr><td class="prob-num">68</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/906/F" target="_blank">Reverses (Hard)</a></td><td class="prob-id">906F</td><td><span class="topic-tag">Palindrome Tree DP</span></td></tr>
+        <tr><td class="prob-num">69</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/191/E" target="_blank">Thief in a Shop</a></td><td class="prob-id">191E</td><td><span class="topic-tag">Generating Functions</span></td></tr>
+        <tr><td class="prob-num">70</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/235/C" target="_blank">Cyclical Quest</a></td><td class="prob-id">235C</td><td><span class="topic-tag">Suffix Automaton Intro</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LEVEL 6 -->
+  <div class="level-section lvl6">
+    <div class="level-header">
+      <div class="level-badge">🟣</div>
+      <div class="level-info">
+        <h2>Level 6 — Expert / Master</h2>
+        <div class="level-meta">Rating ~2300–2600 · Suffix Automaton, SAM + DP, advanced palindrome structures</div>
+      </div>
+      <div class="level-count">15 problems</div>
+    </div>
+    <table class="problems-table">
+      <thead><tr><th>#</th><th>Problem</th><th>ID</th><th>Topic</th></tr></thead>
+      <tbody>
+        <tr><td class="prob-num">71</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/700/E" target="_blank">Cool Slogans (SAM)</a></td><td class="prob-id">700E</td><td><span class="topic-tag">SAM + DP</span></td></tr>
+        <tr><td class="prob-num">72</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/666/E" target="_blank">Forensic Examination</a></td><td class="prob-id">666E</td><td><span class="topic-tag">SAM + Merge Sort Tree</span></td></tr>
+        <tr><td class="prob-num">73</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/547/E" target="_blank">Mike and Friends</a></td><td class="prob-id">547E</td><td><span class="topic-tag">Aho-Corasick + BIT</span></td></tr>
+        <tr><td class="prob-num">74</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/758/F" target="_blank">Geometrical Progression</a></td><td class="prob-id">758F</td><td><span class="topic-tag">SAM</span></td></tr>
+        <tr><td class="prob-num">75</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/316/G3" target="_blank">Summer Oenothera Exhibition (Hard)</a></td><td class="prob-id">316G3</td><td><span class="topic-tag">Generalized SAM</span></td></tr>
+        <tr><td class="prob-num">76</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/F" target="_blank">String Journey (SAM)</a></td><td class="prob-id">1063F</td><td><span class="topic-tag">SAM + Hashing</span></td></tr>
+        <tr><td class="prob-num">77</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/G" target="_blank">Privatization of Roads</a></td><td class="prob-id">1063G</td><td><span class="topic-tag">SAM on Tree</span></td></tr>
+        <tr><td class="prob-num">78</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/E" target="_blank">Minimal Spanning Tree (SAM)</a></td><td class="prob-id">1063E</td><td><span class="topic-tag">SAM + Segment Tree</span></td></tr>
+        <tr><td class="prob-num">79</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/464/E" target="_blank">The Classic Problem</a></td><td class="prob-id">464E</td><td><span class="topic-tag">SAM + Dijkstra</span></td></tr>
+        <tr><td class="prob-num">80</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/750/E" target="_blank">New Year Domino</a></td><td class="prob-id">750E</td><td><span class="topic-tag">SAM</span></td></tr>
+        <tr><td class="prob-num">81</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/504/E" target="_blank">Misha and LCP on Tree</a></td><td class="prob-id">504E</td><td><span class="topic-tag">SA + LCP + Tree</span></td></tr>
+        <tr><td class="prob-num">82</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/H" target="_blank">A + B Strikes Back (Master)</a></td><td class="prob-id">1063H</td><td><span class="topic-tag">SAM + Offline</span></td></tr>
+        <tr><td class="prob-num">83</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/235/D" target="_blank">Roman and Numbers</a></td><td class="prob-id">235D</td><td><span class="topic-tag">SAM + Bitmask DP</span></td></tr>
+        <tr><td class="prob-num">84</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/D" target="_blank">Zeros and Ones (SAM)</a></td><td class="prob-id">1063D</td><td><span class="topic-tag">SAM + Palindrome</span></td></tr>
+        <tr><td class="prob-num">85</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1202/E" target="_blank">You Need to Proofread (Hard)</a></td><td class="prob-id">1202E</td><td><span class="topic-tag">Aho-Corasick + SAM</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LEVEL 7 -->
+  <div class="level-section lvl7">
+    <div class="level-header">
+      <div class="level-badge">🏆</div>
+      <div class="level-info">
+        <h2>Level 7 — Grandmaster</h2>
+        <div class="level-meta">Rating ~2600+ · Combining multiple algorithms, competitive-grade string problems</div>
+      </div>
+      <div class="level-count">15 problems</div>
+    </div>
+    <table class="problems-table">
+      <thead><tr><th>#</th><th>Problem</th><th>ID</th><th>Topic</th></tr></thead>
+      <tbody>
+        <tr><td class="prob-num">86</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/666/E" target="_blank">Forensic Examination (GM)</a></td><td class="prob-id">666E</td><td><span class="topic-tag">SAM + Seg Tree</span></td></tr>
+        <tr><td class="prob-num">87</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/547/E" target="_blank">Mike and Friends (GM)</a></td><td class="prob-id">547E</td><td><span class="topic-tag">AC + HLD</span></td></tr>
+        <tr><td class="prob-num">88</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/F" target="_blank">String Journey (GM)</a></td><td class="prob-id">1063F</td><td><span class="topic-tag">Z + SA + Hash</span></td></tr>
+        <tr><td class="prob-num">89</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/G" target="_blank">Privatization of Roads (GM)</a></td><td class="prob-id">1063G</td><td><span class="topic-tag">SAM + LCT</span></td></tr>
+        <tr><td class="prob-num">90</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/E" target="_blank">Minimal Spanning Tree (GM)</a></td><td class="prob-id">1063E</td><td><span class="topic-tag">SA + LCP + DS</span></td></tr>
+        <tr><td class="prob-num">91</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/504/E" target="_blank">Misha and LCP (GM)</a></td><td class="prob-id">504E</td><td><span class="topic-tag">SA + Tree + HLD</span></td></tr>
+        <tr><td class="prob-num">92</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/H" target="_blank">A + B Strikes Back (GM)</a></td><td class="prob-id">1063H</td><td><span class="topic-tag">SAM + Offline + BIT</span></td></tr>
+        <tr><td class="prob-num">93</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/700/E" target="_blank">Cool Slogans (GM)</a></td><td class="prob-id">700E</td><td><span class="topic-tag">SAM + DP + SA</span></td></tr>
+        <tr><td class="prob-num">94</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/758/F" target="_blank">Geometrical Progression (GM)</a></td><td class="prob-id">758F</td><td><span class="topic-tag">SAM + Number Theory</span></td></tr>
+        <tr><td class="prob-num">95</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/464/E" target="_blank">The Classic Problem (GM)</a></td><td class="prob-id">464E</td><td><span class="topic-tag">SAM + Shortest Path</span></td></tr>
+        <tr><td class="prob-num">96</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1063/D" target="_blank">Zeros and Ones (GM)</a></td><td class="prob-id">1063D</td><td><span class="topic-tag">Palindromic SA + Eertree</span></td></tr>
+        <tr><td class="prob-num">97</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/316/G3" target="_blank">Summer Oenothera (GM)</a></td><td class="prob-id">316G3</td><td><span class="topic-tag">Gen. SAM + Heavy Path</span></td></tr>
+        <tr><td class="prob-num">98</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/1202/E" target="_blank">Proofread (GM)</a></td><td class="prob-id">1202E</td><td><span class="topic-tag">AC + SAM + DP</span></td></tr>
+        <tr><td class="prob-num">99</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/906/E" target="_blank">Reverses (GM)</a></td><td class="prob-id">906E</td><td><span class="topic-tag">Palindrome Tree + SA</span></td></tr>
+        <tr><td class="prob-num">100</td><td><a class="prob-link" href="https://codeforces.com/problemset/problem/235/D" target="_blank">Roman and Numbers (GM)</a></td><td class="prob-id">235D</td><td><span class="topic-tag">SAM + Bitmask + DP</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  <p>All problems link to <a href="https://codeforces.com" target="_blank">codeforces.com</a> · Study reference at <a href="https://cp-algorithms.com" target="_blank">cp-algorithms.com</a></p>
+  <p style="margin-top:8px; opacity:0.5;">100 Problems · 7 Levels · Newbie → Grandmaster</p>
+</footer>
+
+<script>
+  function filterProblems() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('.problems-table tbody tr');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(q) ? '' : 'none';
+    });
+    // Show/hide level sections based on visible rows
+    document.querySelectorAll('.level-section').forEach(section => {
+      const visible = [...section.querySelectorAll('tbody tr')].some(r => r.style.display !== 'none');
+      section.style.display = q === '' || visible ? '' : 'none';
+    });
+  }
+
+  // Stagger level section animations
+  document.querySelectorAll('.level-section').forEach((el, i) => {
+    el.style.animationDelay = `${0.5 + i * 0.08}s`;
+  });
+</script>
+
+</body>
+</html>
